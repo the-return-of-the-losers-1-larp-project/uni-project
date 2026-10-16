@@ -27,18 +27,24 @@ keyboard behaviour: digraph latency, dwell time on three form fields;
 activity patterns: idle ratio, scroll entropy;
 session metadata: timezone mismatch, referrer type, viewport width.
 
-
-
-
-
 7. Planned queries and outputs:
 
+1. - Average of each interaction metric, grouped by label.
+2. - Sessions filtered by duration, label and referrer type.
+-----OUTPUTS------
+A filterable table of sessions
+A distribution chart of a selected metric, split by label.
+A comparison table of average metrics for bots and humans.
 
-
+For a live session: a verdict and the three most similar historical sessions with labels
 
 
 8. Intended ML outcome:
 The system shall output either 0(human user) or 1(bot user)
+--Task: binary classification of a session as bot or human.
+--Output for the user: a verdict plus the three most similar historical sessions
+(nearest neighbours) with their labels. The choice of algorithm will be made in the design phase.
+
 
 
 
