@@ -1,9 +1,6 @@
-import streamlit as st
-import pandas as pd
-from pandasql import sqldf
+import ui
+import data
 
-st.title("Bot vs Human Session Detector")
-
-df = pd.read_csv("data/data.csv")
-st.write("Number of sessions:", len(df))
-st.dataframe(df.head())
+# this will generate a new db file each time it's ran
+data.clean_up()
+ui.main()
