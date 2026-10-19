@@ -1,8 +1,23 @@
 from joblib import load
+import nbformat
+from nbconvert.preprocessors import ExecutePreprocessor
+import os
+import config
+
 
 def load_model():
-    model = load("model/bvh_knn_model48.joblib")
-    scaler = load("model/bvh_scaler48.joblib")
-    expected_columns = load("model/bvh_features48.joblib")
+    # generate model files if they don't exist
+    if (
+        not os.path.exists(config.MODEL_PATH) or
+        not os.path.exists(config.SCALER_PATH) or
+        not os.path.exists(config.FEATURES_PATH)
+    ):
+        with open(config.MODEL_GEN_NOTEBOOK_PATH) as f:
+            nb_in = nbformat.read(f, nbformat.NO_CONVERT)
+        ExecutePreprocessor().preprocess(nb_in)
+
+    model = load(config.MODEL_PATH)
+    scaler = load(config.SCALER_PATH)
+    expected_columns = load(config.FEATURES_PATH)
 
     return model, scaler, expected_columns

@@ -1,10 +1,16 @@
 import csv
 import pandas as pd
 import sqlite3
+import os
+import config
 
 def clean_up():
     data = []
-    with open("data/data.csv") as f:
+
+    if not os.path.exists(config.RAW_DATA_PATH):
+        raise FileNotFoundError(f"WHERE is the raw data??? certainly not at {config.RAW_DATA_PATH}")
+
+    with open(config.RAW_DATA_PATH) as f:
         for row in csv.reader(f):
             data.append(row)
 
@@ -48,5 +54,5 @@ def clean_up():
 
     df = pd.DataFrame(new_data, columns=col_names)
     df = df.astype(datatypes) # cast to type
-    with sqlite3.connect('data/data.db') as conn:
+    with sqlite3.connect(config.DATA_DB_PATH) as conn:
         df.to_sql('data', conn, if_exists='replace', index=False)

@@ -1,4 +1,4 @@
 .venv
 __pycache__
-data/data.db
-model/*.joblib
+assets/data.db
+assets/*.joblib
