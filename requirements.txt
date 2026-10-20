@@ -1,3 +1,4 @@
 streamlit
 pandasql
 nbconvert
+streamlit-extras
