@@ -34,13 +34,13 @@ def clean_up():
         'dwell_field3_ms': 'int64',
         'session_duration_ms': 'int64',
         'pages_visited': 'int64',
-        'timezone_mismatch': 'bool',
+        'timezone_mismatch': 'int64',
         'referrer_type': 'str',
-        'webdriver_flag': 'bool',
+        'webdriver_flag': 'int64',
         'button_hover_ms': 'int64',
         'copy_events': 'int64',
         'viewport_width': 'int64',
-        'bot': 'bool'
+        'bot': 'int64'
     }
 
     new_data = []
