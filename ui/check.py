@@ -4,14 +4,6 @@ import streamlit as st
 from sklearn.neighbors import NearestNeighbors
 from sklearn.preprocessing import StandardScaler
 
-
-#
-def init(_data):
-    global app_data
-    app_data = _data
-
-
-
 class ScalerAndModel:
     """Only used if load_model() returns the scaler and the model separately."""
     def __init__(self, scaler, model):
@@ -24,7 +16,6 @@ class ScalerAndModel:
     def predict_proba(self, X):
         return self.model.predict_proba(self.scaler.transform(X))
 
-
 def find_model(model_files):
     if model_files is None or hasattr(model_files, "predict"):
         return model_files
@@ -35,7 +26,9 @@ def find_model(model_files):
         return ScalerAndModel(scaler, model)
     return model
 
-
+def init(_data):
+    global app_data
+    app_data = _data
 
 def main():
     df = app_data.df
