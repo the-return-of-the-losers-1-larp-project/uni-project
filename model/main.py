@@ -14,7 +14,7 @@ def load_model():
     ):
         with open(config.MODEL_GEN_NOTEBOOK_PATH) as f:
             nb_in = nbformat.read(f, nbformat.NO_CONVERT)
-        ExecutePreprocessor().preprocess(nb_in)
+        ExecutePreprocessor(kernel_name="python3").preprocess(nb_in)
 
     model = load(config.MODEL_PATH)
     scaler = load(config.SCALER_PATH)

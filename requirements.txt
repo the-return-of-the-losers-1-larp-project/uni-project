@@ -1,4 +1,7 @@
 streamlit
-nbconvert
 streamlit-extras
 scikit-learn
+nbconvert
+nbformat
+nbclient
+ipykernel
