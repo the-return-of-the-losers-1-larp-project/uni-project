@@ -1,17 +1,18 @@
-"""Check page: enter a session -> verdict, three most similar sessions, comparison."""
+
 import pandas as pd
 import streamlit as st
 from sklearn.neighbors import NearestNeighbors
 from sklearn.preprocessing import StandardScaler
 
 class ScalerAndModel:
-    """Only used if load_model() returns the scaler and the model separately."""
+    
     def __init__(self, scaler, model):
         self.scaler, self.model = scaler, model
         self.feature_names_in_ = getattr(scaler, "feature_names_in_", None)
 
     def predict(self, X):
         return self.model.predict(self.scaler.transform(X))
+
 
     def predict_proba(self, X):
         return self.model.predict_proba(self.scaler.transform(X))
@@ -26,9 +27,11 @@ def find_model(model_files):
         return ScalerAndModel(scaler, model)
     return model
 
+
 def init(_data):
     global app_data
     app_data = _data
+
 
 def main():
     df = app_data.df
@@ -60,6 +63,7 @@ def main():
     sure_human = df.loc[bot_probability[df["bot"] == 0].idxmin()]
 
     start_from = st.selectbox("Start from", ["Median session", "A recorded bot", "A recorded human"])
+
     st.caption("The model is not right for every session, see the accuracy in the report.")
     if start_from == "Median session":
         start = df[features].median()
@@ -72,6 +76,7 @@ def main():
     values = {}
     cols = st.columns(3)
     for i, name in enumerate(features):
+
         key = f"{name}_{start_from}"                          
         with cols[i % 3]:
             if df[name].nunique() <= 2:                      
@@ -81,6 +86,7 @@ def main():
     if referrers:                                             
         index = referrers.index(start_referrer) if start_referrer in referrers else 0
         referrer = st.selectbox("referrer_type", referrers, index=index, key=f"referrer_{start_from}")
+
 
     compare = st.selectbox("Metric to compare with the averages", features)
 
@@ -100,6 +106,7 @@ def main():
         else:
             st.success("Verdict: HUMAN")
         if hasattr(model, "predict_proba"):
+
             st.write(f"Model confidence: {model.predict_proba(model_input)[0].max():.0%}")
 
        
@@ -108,11 +115,13 @@ def main():
         distance, index = neighbours.kneighbors(scaler.transform(session))
         similar = df.iloc[index[0]].copy()
         similar.insert(0, "label", similar["bot"].map({0: "Human", 1: "Bot"}))
+
         st.subheader("Three most similar recorded sessions")
         st.dataframe(similar)
 
         
         st.subheader("Session Comparison")
+        
         comparison = pd.DataFrame(
             {compare: [session[compare].iloc[0],
                        df[df["bot"] == 0][compare].mean(),

@@ -1,9 +1,9 @@
-"""Explore page: filters -> SQL query (pandasql) -> results and charts."""
+
 import streamlit as st
 import data
 import re
 
-# every bot is 1, every human is 0; this turns that into a readable label in SQL
+
 LABEL = "CASE WHEN bot = 1 THEN 'Bot' ELSE 'Human' END"
 
 def init(_data):
@@ -14,6 +14,7 @@ def main():
     df = app_data.df
 
     st.title("Session Explorer")
+
     st.caption("Explore which behaviour patterns are associated with automated sessions.")
     
     st.subheader("Filters")
@@ -27,6 +28,7 @@ def main():
         dur_max = int(df["session_duration_ms"].max())
         duration = st.slider("Session duration (ms)", dur_min, dur_max, (dur_min, dur_max))
 
+
     with col2:
         st.markdown("**Behaviour**")
         clicks_min = int(df["clicks"].min())
@@ -39,6 +41,7 @@ def main():
         timezone = st.selectbox("Timezone mismatch", ["All", "No", "Yes"])
         webdriver = st.selectbox("Webdriver flag", ["All", "No", "Yes"])
 
+
     
     conditions = [
         f"session_duration_ms BETWEEN {duration[0]} AND {duration[1]}",
@@ -48,6 +51,7 @@ def main():
     
     if session_type != "All":
         conditions.append(f"bot = {1 if session_type == 'Bot' else 0}")
+
     if timezone != "All":
         conditions.append(f"timezone_mismatch = {1 if timezone == 'Yes' else 0}")
     if webdriver != "All":
@@ -64,6 +68,7 @@ def main():
     query = re.sub(r" +", " ", query)
     result = data.run_sql(query).iloc[0]
 
+
     st.divider()
     st.subheader("Results")
     if result["sessions"] == 0:
@@ -78,9 +83,10 @@ def main():
 
     with st.expander("Show the SQL query"):
         st.code(query.replace(" +", " "), language="sql")
+
     
     def averages(columns):
-        """Average of some columns, for bots and for humans (an SQL query)."""
+        
         parts = ", ".join(f"ROUND(AVG({c}), 2) AS {c}" for c in columns)
         table = data.run_sql(f"SELECT {LABEL} AS label, {parts} FROM data WHERE {where} GROUP BY label")
         return table.set_index("label")
@@ -93,6 +99,7 @@ def main():
         counts = data.run_sql(f"SELECT {LABEL} AS label, COUNT(*) AS sessions FROM data WHERE {where} GROUP BY label")
         st.dataframe(counts)
         st.bar_chart(counts.set_index("label"), horizontal=True)
+
 
     with tab2:
         clicking = averages(["median_click_interval_ms", "click_interval_std_ms", "button_hover_ms"])
