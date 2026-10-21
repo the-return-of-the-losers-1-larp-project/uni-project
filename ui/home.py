@@ -50,6 +50,8 @@ def main():
     st.text("for cool demonstrative purposes")
     st.dataframe(df.head())
 
-    st.header("various links")
-    st.page_link(app_data.pages[1], label="Click here to explore the dataset!!")
-    st.page_link(app_data.pages[2], label="Click here to try out your own values!!")
+    if st.button("Explore the dataset", icon=":material/dataset:", type="primary", width="stretch"):
+        st.switch_page(app_data.pages[1])
+        
+    if st.button("Try your own values", icon=":material/tune:", width="stretch"):
+        st.switch_page(app_data.pages[2])
