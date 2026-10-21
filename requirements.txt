@@ -1,3 +1,8 @@
 streamlit
-nbconvert
 streamlit-extras
+scikit-learn
+pandasql
+nbconvert
+nbformat
+nbclient
+ipykernel
