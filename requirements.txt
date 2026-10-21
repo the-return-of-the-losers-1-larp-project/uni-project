@@ -1,6 +1,7 @@
 streamlit
 streamlit-extras
 scikit-learn
+pandasql
 nbconvert
 nbformat
 nbclient
